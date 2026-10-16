@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>도로 감지 기록</title>
+<style>
+:root{--ink:#153d35;--paper:#f0efe7;--accent:#de623c}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:radial-gradient(circle at top right,#cddbd2,transparent 50%),var(--paper);font-family:Georgia,'Apple SD Gothic Neo',sans-serif}main{max-width:1100px;margin:auto;padding:40px 24px}header{border-bottom:2px solid var(--ink);padding-bottom:24px}small{letter-spacing:3px}h1{font-size:clamp(32px,6vw,58px);margin:12px 0}input,button{padding:12px;border:1px solid var(--ink);border-radius:4px;font:inherit}button{background:var(--ink);color:white;cursor:pointer}input{max-width:100%;margin:8px 4px 0 0}#records{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;margin-top:30px}article{background:#fffdf5;border:1px solid #c7cebf;padding:16px}article img{width:100%;height:210px;object-fit:contain;background:#e4e7df}a{color:var(--accent)}#status{min-height:24px}
+</style>
+<main><header><small>ROAD GATEWAY / FIELD RECORDS</small><h1>도로 감지 기록</h1><p>라즈베리파이 감지 사진과 휴대폰 위치를 확인합니다.</p><input id="token" type="password" placeholder="API 토큰 (설정한 경우)"><button id="refresh">기록 불러오기</button></header><p id="status" role="status"></p><section id="records"></section></main>
+<script>
+let urls=[];
+const node=(tag,text)=>{const e=document.createElement(tag);e.textContent=text;return e};
+async function load(){const status=document.querySelector('#status');const box=document.querySelector('#records');status.textContent='불러오는 중';const token=document.querySelector('#token').value;const headers=token?{Authorization:'Bearer '+token}:{};try{const response=await fetch('/api/events',{headers});if(!response.ok)throw Error('조회 실패: '+response.status);const events=await response.json();urls.forEach(URL.revokeObjectURL);urls=[];box.replaceChildren();for(const event of events){const card=node('article','');const photo=document.createElement('img');photo.alt=event.type+' 현장 사진';const image=await fetch(event.imageUrl,{headers});if(image.ok){const url=URL.createObjectURL(await image.blob());urls.push(url);photo.src=url}card.append(photo,node('h2',event.type),node('p','신뢰도 '+Math.round(event.confidence*100)+'%'),node('p',new Date(event.detectedAt).toLocaleString('ko-KR')),node('p',`${event.latitude.toFixed(6)}, ${event.longitude.toFixed(6)} · ±${Math.round(event.locationAccuracy)}m`));const link=node('a','지도에서 위치 보기');link.href=`https://www.google.com/maps?q=${event.latitude},${event.longitude}`;link.target='_blank';link.rel='noopener';card.append(link);box.append(card)}status.textContent=events.length+'건의 감지 기록'}catch(error){status.textContent=error.message}}
+document.querySelector('#refresh').onclick=load;load();
+</script>
+</html>

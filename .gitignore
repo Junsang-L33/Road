@@ -1,0 +1,96 @@
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Android builds and machine-specific IDE settings
+.gradle/
+.kotlin/
+build/
+.idea/
+.vscode/
+*.iml
+local.properties
+.externalNativeBuild/
+.cxx/
+captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.hprof
+# Keep android/gradle/wrapper/gradle-wrapper.jar in Git.
+
+# Local secrets, credentials, and signing keys
+.env
+.env.*
+!.env.example
+!.env.template
+*.local.properties
+*.local.json
+secrets/
+credentials.json
+*service-account*.json
+*.jks
+*.keystore
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Received photos, queued events, databases, and logs
+data/
+spool/
+uploads/
+recordings/
+logs/
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.log
+.pending-*
+
+# Trained model weights and embedding caches
+models/
+*.pt
+*.pth
+*.onnx
+*.tflite
+*.engine
+*.safetensors
+*.ckpt
+*.pkl
+*.pickle
+*.joblib
+
+# Generated distributions and archives (publish APKs as release assets)
+/dist/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+
+# Local tool telemetry
+.github/modernize/**/hooks/*.json
+
+# OS metadata and editor temporary files
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+*~
+*.swp
+*.swo
